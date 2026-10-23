@@ -1,0 +1,24 @@
+# Environnement virtuel Python
+env/
+venv/
+.venv/
+
+__pycache__/
+*.py[cod]
+
+
+pages_locales/
+
+
+exports/
+export/
+data/images/
+
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets éventuels
+.env

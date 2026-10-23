@@ -1,7 +1,8 @@
-BASE_URL = "https://www.amazon.fr/s?k=laptop"   # ou amazon.fr
+BASE_URL = "https://www.amazon.fr/"   # ou amazon.fr
 NB_PAGES = 3
 DELAI = 4
 TIMEOUT = 15
+MODE_LOCAL = True 
 
 SELECTEUR_PRODUIT = "div[data-component-type='s-search-result']"
 SELECTEUR_TITRE = "h2 span"
