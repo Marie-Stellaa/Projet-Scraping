@@ -7,7 +7,7 @@ import config
 from app.models.produit import Produit
 
 
-def extraire_donnees_page(html_brut):
+def extraire_donnees_page(html_brut, nom_page=""):
     """
     Analyse le code HTML d'une page de recherche Amazon
     et renvoie une liste d'objets Produit.
@@ -27,6 +27,13 @@ def extraire_donnees_page(html_brut):
         balise_note = bloc.select_one(config.SELECTEUR_NOTE)
         note = balise_note.text.strip() if balise_note else "Pas de note"
 
-        liste_produits.append(Produit(titre, prix, note))
+        balise_image = bloc.select_one("img.s-image")
+        image_url = balise_image.get("src", "") if balise_image else ""
+
+        asin = bloc.get("data-asin", "")
+
+        liste_produits.append(
+            Produit(titre, prix, note, image_url=image_url, asin=asin, page=nom_page)
+        )
 
     return liste_produits

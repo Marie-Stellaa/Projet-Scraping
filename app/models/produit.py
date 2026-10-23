@@ -1,10 +1,14 @@
 # app/models/produit.py
 
 class Produit:
-    def __init__(self, titre: str, prix: str, note: str):
+    def __init__(self, titre: str, prix: str, note: str,
+                 image_url: str = "", asin: str = "", page: str = ""):
         self.titre = titre
         self.prix = prix
         self.note = note
+        self.image_url = image_url
+        self.asin = asin
+        self.page = page
 
     def __str__(self):
         """
@@ -18,7 +22,10 @@ class Produit:
         Très utile pour l'exportateur CSV ou Excel avec Pandas.
         """
         return {
+            "Page": self.page,
             "Titre": self.titre,
             "Prix": self.prix,
-            "Note": self.note
+            "Note": self.note,
+            "Image_URL": self.image_url,
+            "ASIN": self.asin
         }
