@@ -6,7 +6,7 @@ from urllib.parse import quote_plus
 SITE = "https://www.amazon.fr"
 DOSSIER_PAGES = "pages_locales"
 
-# Une recherche Amazon par ligne. Mets un # devant une ligne pour la desactiver.
+
 CATEGORIES = [
     "laptop",
     "earpods",
