@@ -1,4 +1,3 @@
-
 from app.scraper.amazon_scraper import AmazonScraper
 from app.models.depot import Depot
 from app.views.console_view import ConsoleView
@@ -11,46 +10,53 @@ class ScrapingController:
     def __init__(self):
         self.scraper = AmazonScraper()
         self.depot = Depot()
+        self.nb_nouveaux = 0   
 
+    # ------------------------------------------------------------------
+    # Méthodes utilisées par l'interface graphique
+    # ------------------------------------------------------------------
     def recuperer_produits(self):
-        """Lance le scraping et renvoie la liste des produits (utilisé par l'interface graphique)."""
-       
-        self.depot = Depot()
+        """
+        Lance le scraping. La base n'est remplacée que si de nouveaux produits
+        ont été récupérés : en cas d'échec (captcha, réseau...), les anciennes
+        données sont conservées.
+        """
+        produits = self.scraper.executer_scraping()
+        self.nb_nouveaux = len(produits)
 
-        produits_recuperes = self.scraper.executer_scraping()
-        if not produits_recuperes:
-            return []
+        if produits:
+            self.depot.vider()
+            self.depot.ajouter_plusieurs(produits)
 
-        self.depot.ajouter_plusieurs(produits_recuperes)
+        return self.depot.recuperer_tous()
+
+    def charger_depuis_base(self):
+        """Relit les produits déjà enregistrés dans la base SQLite."""
         return self.depot.recuperer_tous()
 
     def exporter(self):
-        """Exporte les produits du dépôt en CSV et renvoie le chemin du fichier."""
-        donnees_finales = self.depot.recuperer_tous()
-        ExportView.exporter_en_csv(donnees_finales, nom_fichier=FICHIER_EXPORT)
+        """Exporte le contenu de la base en CSV et renvoie le chemin du fichier."""
+        ExportView.exporter_en_csv(self.depot.recuperer_tous(), FICHIER_EXPORT)
         return FICHIER_EXPORT
 
+    # ------------------------------------------------------------------
+    # Mode console
+    # ------------------------------------------------------------------
     def lancer_application(self):
-        """Démarre le flux complet de l'application."""
+        """Démarre le flux complet de l'application en console."""
         ConsoleView.afficher_message("Demarrage de l'application de scraping...")
 
-        
-        produits_recuperes = self.scraper.executer_scraping()
+        produits = self.recuperer_produits()
 
-        if not produits_recuperes:
-            ConsoleView.afficher_erreur("Le scraping n'a genere aucun resultat.")
+        if self.nb_nouveaux == 0:
+            ConsoleView.afficher_erreur(
+                "Le scraping n'a genere aucun resultat. La base n'a pas ete modifiee."
+            )
             return
 
-      
-        self.depot.ajouter_plusieurs(produits_recuperes)
-
-     
-        donnees_finales = self.depot.recuperer_tous()
-
-      
-        ConsoleView.afficher_produits(donnees_finales)
+        ConsoleView.afficher_produits(produits)
 
         ConsoleView.afficher_message("Lancement de l'exportation des donnees...")
-        ExportView.exporter_en_csv(donnees_finales)
+        self.exporter()
 
         ConsoleView.afficher_message("Application terminee avec succes !")

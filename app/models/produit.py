@@ -10,16 +10,12 @@ class Produit:
         self.categorie = categorie
 
     def __str__(self):
-        """
-        Permet d'afficher proprement le produit textuellement.
-        """
-        return f"Produit: {self.titre} | Prix: {self.prix} | Note: {self.note}"
+        """Affiche proprement le produit en texte."""
+        return (f"[{self.categorie}] Produit: {self.titre} | "
+                f"Prix: {self.prix} | Note: {self.note}")
 
-    def To_dict(self):
-        """
-        Convertit l'objet en dictionnaire.
-        Très utile pour l'exportateur CSV ou Excel avec Pandas.
-        """
+    def to_dict(self):
+        """Convertit l'objet en dictionnaire (utilisé par l'export CSV)."""
         return {
             "Categorie": self.categorie,
             "Page": self.page,
@@ -27,5 +23,5 @@ class Produit:
             "Prix": self.prix,
             "Note": self.note,
             "Image_URL": self.image_url,
-            "ASIN": self.asin
+            "ASIN": self.asin,
         }

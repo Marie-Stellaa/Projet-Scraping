@@ -15,14 +15,10 @@ ENTETES = {
 class ExportView:
     @staticmethod
     def _en_dict(produit):
-        """Accepte un dictionnaire ou un objet Produit (to_dict ou To_dict)."""
+        """Accepte un dictionnaire ou un objet Produit."""
         if isinstance(produit, dict):
             return dict(produit)
-        for nom in ("to_dict", "To_dict"):
-            methode = getattr(produit, nom, None)
-            if methode:
-                return methode()
-        raise AttributeError("Le produit n'a ni to_dict ni To_dict.")
+        return produit.to_dict()
 
     @staticmethod
     def _telecharger_image(url, nom_base, dossier_images, pause=0.5):
@@ -77,7 +73,8 @@ class ExportView:
 
             lignes.append(ligne)
 
-        colonnes = ["Categorie", "Page", "Titre", "Prix", "Note", "Image_URL", "Image_Fichier"]
+        colonnes = ["Categorie", "Page", "ASIN", "Titre", "Prix", "Note",
+                    "Image_URL", "Image_Fichier"]
 
         try:
             with open(nom_fichier, mode="w", encoding="utf-8-sig", newline="") as fichier:

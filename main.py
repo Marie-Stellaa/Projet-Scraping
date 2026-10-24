@@ -1,6 +1,6 @@
-# main.py
+
 import sys
-sys.path.append('.')  # Sécurité pour s'assurer que Python trouve tous les dossiers
+sys.path.append('.')  
 
 
 def main():
