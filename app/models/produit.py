@@ -1,4 +1,4 @@
-# app/models/produit.py
+
 
 class Produit:
     def __init__(self, titre: str, prix: str, note: str,

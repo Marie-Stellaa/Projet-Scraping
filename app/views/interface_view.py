@@ -1,6 +1,4 @@
-# app/views/interface_view.py
-# Vue graphique (Tkinter) : elle affiche et reçoit les clics,
-# mais tout le travail est délégué au contrôleur.
+
 import threading
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -12,8 +10,8 @@ class InterfaceView(tk.Tk):
     def __init__(self, controleur):
         super().__init__()
         self.controleur = controleur
-        self.produits = []        # tous les produits récupérés
-        self._thread = None       # thread qui fait le scraping
+        self.produits = []        
+        self._thread = None       
         self._resultat = None
         self._erreur = None
 
@@ -85,7 +83,7 @@ class InterfaceView(tk.Tk):
         if self._thread is not None and self._thread.is_alive():
             return
 
-        config.MODE_LOCAL = self.var_local.get()   # applique le choix de l'utilisateur
+        config.MODE_LOCAL = self.var_local.get()   
         self._resultat = None
         self._erreur = None
 
@@ -93,7 +91,7 @@ class InterfaceView(tk.Tk):
         self.var_statut.set("Scraping en cours, patiente...")
         self.progression.start(12)
 
-        # Le scraping tourne dans un thread à part pour ne pas figer la fenêtre
+       
         self._thread = threading.Thread(target=self._travail, daemon=True)
         self._thread.start()
         self.after(200, self._verifier)

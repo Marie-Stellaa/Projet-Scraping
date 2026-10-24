@@ -1,6 +1,6 @@
-# app/scraper/parsing.py
+
 import sys
-sys.path.append('.')  # Permet à Python de regarder à la racine du projet
+sys.path.append('.') 
 
 from bs4 import BeautifulSoup
 import config

@@ -26,7 +26,7 @@ class Driver:
         
         self.pilote = webdriver.Chrome(options=options)
         
-        # Modifie les propriétés du navigateur pour effacer les traces de Selenium
+     
         self.pilote.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
             "source": "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
         })

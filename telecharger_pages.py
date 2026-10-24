@@ -1,8 +1,3 @@
-# telecharger_pages.py
-# Enregistre les pages de résultats Amazon dans le dossier pages_locales,
-# pour pouvoir ensuite travailler hors-ligne avec MODE_LOCAL = True.
-# Le script peut être relancé : il saute les pages déjà enregistrées
-# et réessaie chaque page plusieurs fois en cas d'erreur.
 import os
 import sys
 import time
@@ -35,7 +30,7 @@ def telecharger_page(driver, numero):
 def main():
     os.makedirs(DOSSIER, exist_ok=True)
     driver = Driver()
-    driver.pilote.set_page_load_timeout(60)  # n'attend pas plus d'une minute par page
+    driver.pilote.set_page_load_timeout(60)  
 
     try:
         for numero in range(1, config.NB_PAGES + 1):

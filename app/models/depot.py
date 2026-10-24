@@ -1,9 +1,9 @@
-# app/models/depot.py
+
 from app.models.produit import Produit
 
 class Depot:
     def __init__(self):
-        # Liste privée qui va stocker tous nos objets Produit
+       
         self._produits = []
 
     def ajouter_produit(self, produit: Produit):

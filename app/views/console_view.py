@@ -1,4 +1,3 @@
-# app/views/console_view.py
 
 class ConsoleView:
     @staticmethod
@@ -16,6 +15,6 @@ class ConsoleView:
         """Affiche la liste complète des produits récupérés dans la console."""
         print("\n--- LISTE DES PRODUITS COLLECTES ---")
         for index, produit in enumerate(liste_produits, 1):
-            # Utilise la méthode __str__ définie dans le modèle Produit
+           
             print(f"{index}. {produit}")
         print("------------------------------------\n")

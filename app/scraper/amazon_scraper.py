@@ -2,7 +2,7 @@
 import sys
 import time
 import os
-sys.path.append('.')  # Permet de trouver config.py à la racine du projet
+sys.path.append('.') 
 
 from bs4 import BeautifulSoup
 import config
@@ -17,9 +17,7 @@ class AmazonScraper:
     def executer_scraping(self):
         tous_les_produits = []
 
-        # ========================================================
-        # RECHERCHE EN MODE LOCAL (HORS-LIGNE)
-        # ========================================================
+       
         if config.MODE_LOCAL:
             print("Mode Hors-ligne active. Lecture des fichiers locaux...")
             dossier = "pages_locales"
