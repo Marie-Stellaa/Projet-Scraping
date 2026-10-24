@@ -77,7 +77,7 @@ class ExportView:
 
             lignes.append(ligne)
 
-        colonnes = ["Page", "Titre", "Prix", "Note", "Image_URL", "Image_Fichier"]
+        colonnes = ["Categorie", "Page", "Titre", "Prix", "Note", "Image_URL", "Image_Fichier"]
 
         try:
             with open(nom_fichier, mode="w", encoding="utf-8-sig", newline="") as fichier:

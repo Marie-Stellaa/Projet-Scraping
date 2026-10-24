@@ -1,13 +1,12 @@
-
 import sys
-sys.path.append('.') 
+sys.path.append('.')  # Permet à Python de regarder à la racine du projet
 
 from bs4 import BeautifulSoup
 import config
 from app.models.produit import Produit
 
 
-def extraire_donnees_page(html_brut, nom_page=""):
+def extraire_donnees_page(html_brut, nom_page="", categorie=""):
     """
     Analyse le code HTML d'une page de recherche Amazon
     et renvoie une liste d'objets Produit.
@@ -33,7 +32,8 @@ def extraire_donnees_page(html_brut, nom_page=""):
         asin = bloc.get("data-asin", "")
 
         liste_produits.append(
-            Produit(titre, prix, note, image_url=image_url, asin=asin, page=nom_page)
+            Produit(titre, prix, note,
+                    image_url=image_url, asin=asin, page=nom_page, categorie=categorie)
         )
 
     return liste_produits

@@ -6,14 +6,13 @@ sys.path.append('.')
 import config
 from app.scraper.driver import Driver, CaptchaDetecte
 
-DOSSIER = "pages_locales"
 ESSAIS_MAX = 3
 
 
-def telecharger_page(driver, numero):
-    url = f"{config.BASE_URL}&page={numero}"
+def telecharger_page(driver, categorie, numero):
+    url = config.url_recherche(categorie, numero)
     for essai in range(1, ESSAIS_MAX + 1):
-        print(f"Page {numero}/{config.NB_PAGES} (essai {essai}/{ESSAIS_MAX}) : {url}")
+        print(f"[{categorie}] Page {numero}/{config.NB_PAGES} (essai {essai}/{ESSAIS_MAX}) : {url}")
         try:
             html = driver.charger(url)
             if html:
@@ -28,29 +27,38 @@ def telecharger_page(driver, numero):
 
 
 def main():
-    os.makedirs(DOSSIER, exist_ok=True)
+    os.makedirs(config.DOSSIER_PAGES, exist_ok=True)
     driver = Driver()
-    driver.pilote.set_page_load_timeout(60)  
+    driver.pilote.set_page_load_timeout(60)
 
     try:
-        for numero in range(1, config.NB_PAGES + 1):
-            chemin = os.path.join(DOSSIER, f"amazon_laptop_page_{numero}.html")
+        for categorie in config.CATEGORIES:
+            print(f"\n=== Categorie : {categorie} ===")
+            telechargees = 0
 
-            if os.path.exists(chemin):
-                print(f"Page {numero} deja enregistree, on passe.")
-                continue
+            for numero in range(1, config.NB_PAGES + 1):
+                chemin = config.chemin_page(categorie, numero)
 
-            html = telecharger_page(driver, numero)
-            if not html:
-                print(f"Page {numero} non recuperee. Relance le script pour reessayer.")
-                continue
+                if os.path.exists(chemin):
+                    print(f"[{categorie}] Page {numero} deja enregistree, on passe.")
+                    continue
 
-            with open(chemin, "w", encoding="utf-8") as fichier:
-                fichier.write(html)
-            print(f"  -> enregistree : {chemin}")
+                html = telecharger_page(driver, categorie, numero)
+                if not html:
+                    print(f"[{categorie}] Page {numero} non recuperee. Relance le script pour reessayer.")
+                    continue
+
+                with open(chemin, "w", encoding="utf-8") as fichier:
+                    fichier.write(html)
+                print(f"  -> enregistree : {chemin}")
+                telechargees += 1
+
+            if telechargees:
+                time.sleep(config.PAUSE_ENTRE_CATEGORIES)
 
     except CaptchaDetecte as e:
         print(f"Captcha detecte : {e}")
+        print("Relance le script plus tard : les pages deja enregistrees seront sautees.")
         print("Astuce : enregistre les pages a la main depuis ton navigateur (Ctrl+S).")
     finally:
         driver.fermer()
